@@ -1,0 +1,17 @@
+Fontes usadas no Fideliza
+=========================
+
+As duas fontes são distribuídas sob a SIL Open Font License, versão 1.1
+(https://openfontlicense.org), que permite usar, copiar e redistribuir as
+fontes, inclusive junto com um software, desde que este aviso acompanhe os
+arquivos e que as fontes não sejam vendidas isoladamente.
+
+- Bricolage Grotesque (títulos)
+  Copyright 2022 The Bricolage Grotesque Project Authors
+  https://github.com/ateliertriay/bricolage
+  Arquivo: bricolage-grotesque-latin.woff2
+
+- Figtree (textos)
+  Copyright 2022 The Figtree Project Authors
+  https://github.com/erikdkennedy/figtree
+  Arquivo: figtree-latin.woff2

@@ -1,0 +1,20 @@
+Bibliotecas de terceiros usadas no Fideliza
+===========================================
+
+As cópias ficam nesta pasta para que o aplicativo funcione sem internet.
+
+- qrcode-generator 2.0.4 — desenha os QR Codes (compra e cartaz)
+  Copyright (c) 2009 Kazuhiko Arase — Licença MIT
+  https://github.com/kazuhikoarase/qrcode-generator
+  Arquivo: qrcode-generator.js
+
+- jsQR 1.4.0 — lê o QR Code a partir da imagem da câmera
+  Copyright cozmo — Licença Apache 2.0
+  https://github.com/cozmo/jsQR
+  Arquivo: jsQR.js
+
+- Lucide (ícones) — os desenhos dos ícones estão em js/icones.js
+  Licença ISC
+  https://github.com/lucide-icons/lucide
+
+"QR Code" é marca registrada da DENSO WAVE INCORPORATED.

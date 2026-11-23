@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Fideliza — Cartão fidelidade digital</title>
+    <meta
+      name="description"
+      content="Cartão fidelidade digital: a cada compra confirmada pela loja, uma marcação. Com 10 marcações, um cupom de 100% de desconto em um produto."
+    />
+    <meta name="theme-color" content="#F3EEE4" />
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <a class="pular-conteudo" href="#conteudo" id="pular-conteudo">Pular para o conteúdo</a>
+
+    <div class="app" id="app">
+      <header class="cabecalho" id="cabecalho"></header>
+      <main class="conteudo" id="conteudo" tabindex="-1"></main>
+    </div>
+
+    <!-- Avisos rápidos (informações secundárias). Resultados importantes aparecem na própria tela. -->
+    <div class="avisos" id="avisos" role="status" aria-live="polite"></div>
+
+    <noscript>
+      <p class="sem-script">Este aplicativo precisa de JavaScript ativado para funcionar.</p>
+    </noscript>
+
+    <!-- Bibliotecas de terceiros (cópias locais, funcionam sem internet) -->
+    <script src="js/vendor/qrcode-generator.js"></script>
+    <script src="js/vendor/jsQR.js"></script>
+
+    <!-- Aplicação -->
+    <script src="js/config.js"></script>
+    <script src="js/icones.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/leitor.js"></script>
+    <script src="js/telas-acesso.js"></script>
+    <script src="js/telas-cliente.js"></script>
+    <script src="js/telas-loja.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
