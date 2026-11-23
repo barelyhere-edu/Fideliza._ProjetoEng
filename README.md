@@ -1,4 +1,4 @@
-# Fideliza — cartão fidelidade digital
+# Fideliza cartão fidelidade digital
 
 Protótipo funcional que digitaliza o cartão de fidelidade de papel de uma loja. O cliente lê um QR Code no balcão, o vendedor confirma a compra e o cartão ganha uma marcação. Na 10ª marcação o cliente recebe um cupom de 100% de desconto em um produto.
 
@@ -30,7 +30,7 @@ A outra versão do projeto (`fideliza-local`) grava os dados em arquivos `.txt` 
 1. Baixe o repositório (botão **Code → Download ZIP**) e descompacte.
 2. Abra o arquivo `index.html` no navegador.
 
-Também é possível publicar pelo **GitHub Pages**: em **Settings → Pages**, escolha a branch `main` e a pasta `/ (root)`. O site fica disponível em `https://<usuario>.github.io/<repositorio>/`.
+![Ou acessar pelo site no GitHub Pages](https://barelyhere-edu.github.io/Fideliza._ProjetoEng/)
 
 ## Como testar
 
