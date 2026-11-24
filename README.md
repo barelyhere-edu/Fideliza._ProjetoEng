@@ -30,7 +30,7 @@ A outra versão do projeto (`fideliza-local`) grava os dados em arquivos `.txt` 
 1. Baixe o repositório (botão **Code → Download ZIP**) e descompacte.
 2. Abra o arquivo `index.html` no navegador.
 
-![Ou acessar pelo site no GitHub Pages](https://barelyhere-edu.github.io/Fideliza._ProjetoEng/)
+[Ou acessar pelo site no GitHub Pages](https://barelyhere-edu.github.io/Fideliza._ProjetoEng/)
 
 ## Como testar
 
