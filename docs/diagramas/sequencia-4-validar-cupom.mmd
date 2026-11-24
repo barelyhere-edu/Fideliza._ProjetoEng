@@ -1,0 +1,27 @@
+sequenceDiagram
+  autonumber
+  actor C as Cliente
+  actor V as Vendedor
+  participant TL as Tela da loja<br/>(telas-loja.js)
+  participant S as Servidor<br/>(server.js)
+  participant B as Banco de dados<br/>(cupons.txt, vendas.txt)
+
+  C->>V: Mostra o código do cupom<br/>(CUP-XXXXXX) que aparece<br/>em "Meu cartão"
+  V->>TL: Abre "Validar cupom"<br/>e digita o código
+  TL->>S: POST /api/cupons/resgatar<br/>{ codigo }
+  S->>S: Confere a sessão e o perfil<br/>(vendedor ou administrador)
+  S->>B: Procura o cupom pelo código
+
+  alt cupom inexistente
+    S-->>TL: 404 CUPOM_INVALIDO
+    TL-->>V: "Cupom não encontrado"
+  else cupom já utilizado
+    S-->>TL: 409 CUPOM_UTILIZADO
+    TL-->>V: "Este cupom já foi utilizado"<br/>e a data do uso
+  else cupom disponível
+    S->>B: Grava a venda do tipo "cupom"<br/>(valor zero, status "concluída")
+    S->>B: Muda o cupom para "utilizado"<br/>e liga o cupom à venda
+    S-->>TL: 200 { cliente, utilizadoEm,<br/>desconto: 100 }
+    TL-->>V: "Cupom válido:<br/>100% de desconto"
+    V-->>C: Entrega o produto<br/>sem cobrança
+  end

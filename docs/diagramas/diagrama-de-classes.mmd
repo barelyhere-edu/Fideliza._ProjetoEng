@@ -1,0 +1,90 @@
+%%{init: {"class": {"nodeSpacing": 26, "rankSpacing": 30, "padding": 6}}}%%
+classDiagram
+  direction TB
+
+  class Usuario {
+    <<abstract>>
+    +String id
+    +String nome
+    +String identificadorCensurado
+    -String identificadorVerificacao
+    -String senhaSal
+    -String senhaHash
+    +DateTime criadoEm
+    +autenticar(identificador, senha) Sessao
+    +encerrarSessao() void
+  }
+
+  class Cliente {
+    +DateTime consentimentoEm
+    +cadastrar(nome, email, senha, consentimento) Cliente
+    +consultarCartao() CartaoFidelidade
+    +lerQrCode(codigo) Marcacao
+    +iniciarNovoCartao() CartaoFidelidade
+  }
+
+  class Vendedor {
+    +confirmarCompra(valor) Venda
+    +acompanharCompra(idVenda) Venda
+    +validarCupom(codigo) Venda
+    +consultarResumoDoDia() Resumo
+  }
+
+  class Administrador {
+    +consultarTabelaDeVendas(periodo, tipo) Venda[]
+    +consultarHistorico() Venda[]
+    +consultarMarcacoesPorDia() Map
+  }
+
+  class CartaoFidelidade {
+    +String id
+    +int numero
+    +String status «ativo, completo»
+    +DateTime criadoEm
+    +DateTime concluidoEm
+    +int LIMITE_MARCACOES = 10
+    +totalDeMarcacoes() int
+    +estaCompleto() bool
+    +registrarMarcacao(venda) Marcacao
+  }
+
+  class Marcacao {
+    +String id
+    +DateTime dataHora
+  }
+
+  class Venda {
+    +String id
+    +DateTime dataHora
+    +String tipo «compra, cupom»
+    +Decimal valor
+    +String status «pendente, marcada, expirada, concluida»
+    +String codigo
+    +DateTime expiraEm
+    +DateTime marcadaEm
+    +estaExpirada() bool
+  }
+
+  class Cupom {
+    +String id
+    +String codigo
+    +int DESCONTO = 100
+    +String status «disponivel, utilizado»
+    +DateTime geradoEm
+    +DateTime utilizadoEm
+    +utilizar(venda) void
+  }
+
+  Usuario <|-- Cliente
+  Usuario <|-- Vendedor
+  Vendedor <|-- Administrador
+
+  Cliente "1" --> "1..*" CartaoFidelidade : possui
+  CartaoFidelidade "1" *-- "0..10" Marcacao : contém
+  Marcacao "0..1" --> "1" Venda : comprova
+  Vendedor "1" --> "0..*" Venda : confirma
+  Cliente "0..1" --> "0..*" Venda : realiza
+  CartaoFidelidade "1" --> "0..1" Cupom : gera ao completar
+  Cliente "1" --> "0..*" Cupom : recebe
+  Cupom "0..1" --> "0..1" Venda : é usado em
+

@@ -1,0 +1,41 @@
+sequenceDiagram
+  autonumber
+  actor C as Cliente
+  participant T as Tela de acesso<br/>(telas-acesso.js)
+  participant S as Servidor<br/>(server.js)
+  participant B as Banco de dados<br/>(usuarios.txt, cartoes.txt)
+
+  Note over C,T: O cliente chega ao site pelo<br/>QR Code do cartaz da loja
+
+  rect rgb(247, 240, 228)
+    Note over C,B: Cadastro (primeiro acesso)
+    C->>T: Preenche nome, e-mail e senha<br/>e autoriza o uso dos dados
+    T->>S: POST /api/cadastro<br/>{ nome, email, senha, consentimento }
+    S->>S: Valida os campos e exige<br/>o consentimento (LGPD)
+    S->>B: Procura cadastro com o mesmo<br/>código de verificação do e-mail
+    alt e-mail já cadastrado
+      S-->>T: 409 EMAIL_JA_CADASTRADO
+      T-->>C: "Já existe um cadastro<br/>com este e-mail"
+    else e-mail novo
+      S->>S: Censura o e-mail e calcula<br/>o hash da senha (scrypt + sal)
+      S->>B: Grava o usuário (sem e-mail completo<br/>e sem senha) e o cartão nº 1
+      S-->>T: 201 { token, usuario }
+      T-->>C: Abre a tela inicial do cliente
+    end
+  end
+
+  rect rgb(247, 240, 228)
+    Note over C,B: Login (acessos seguintes)
+    C->>T: Informa e-mail e senha
+    T->>S: POST /api/login<br/>{ perfil, identificador, senha }
+    S->>B: Procura o usuário pelo perfil<br/>e pelo código de verificação
+    S->>S: Compara o hash da senha<br/>informada com o hash gravado
+    alt e-mail ou senha incorretos
+      S-->>T: 401 CREDENCIAIS_INVALIDAS<br/>(5 erros seguidos: bloqueio de 1 min)
+      T-->>C: "E-mail ou senha incorretos"
+    else dados corretos
+      S->>S: Cria a sessão (token de 8 h,<br/>guardado só na memória)
+      S-->>T: 200 { token, usuario }
+      T-->>C: Abre a tela inicial do perfil
+    end
+  end

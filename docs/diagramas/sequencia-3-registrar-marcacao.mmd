@@ -1,0 +1,40 @@
+sequenceDiagram
+  autonumber
+  actor C as Cliente
+  participant TC as Tela do cliente<br/>(telas-cliente.js)
+  participant S as Servidor<br/>(server.js)
+  participant B as Banco de dados<br/>(arquivos .txt)
+
+  C->>TC: Lê o QR Code da compra com a<br/>câmera ou digita o código
+  TC->>S: POST /api/marcacoes { codigo }
+  S->>S: Confere a sessão e<br/>o perfil (cliente)
+  S->>B: Procura a venda pelo código
+
+  alt código inexistente
+    S-->>TC: 404 CODIGO_INVALIDO
+    TC-->>C: "Marcação não registrada"
+  else código já utilizado (RN04)
+    S-->>TC: 409 CODIGO_UTILIZADO
+    TC-->>C: "Este código já foi utilizado"
+  else código expirado
+    S-->>TC: 410 CODIGO_EXPIRADO
+    TC-->>C: "Este código expirou"
+  else cartão já tem 10 marcações (RN02)
+    S-->>TC: 409 CARTAO_COMPLETO
+    TC-->>C: Pede para iniciar um novo cartão
+  else código válido e cartão com vaga
+    S->>B: Grava a marcação e muda<br/>a venda para "marcada"
+    opt é a 10ª marcação do cartão (RN05)
+      S->>B: Muda o cartão para "completo"<br/>e grava o cupom de 100%
+    end
+    S-->>TC: 201 { cartao, cupons, cupomGerado }
+    TC-->>C: Mostra o cartão com a nova<br/>marcação (e o cupom, se houver)
+  end
+
+  opt cartão completo e cliente quer continuar (RN06)
+    C->>TC: Toca em "Iniciar novo cartão"
+    TC->>S: POST /api/cartao/novo
+    S->>B: Grava o cartão seguinte,<br/>com 0 marcações
+    S-->>TC: 201 { cartao, cupons }
+    TC-->>C: Mostra o novo cartão vazio<br/>(o cupom continua na lista)
+  end

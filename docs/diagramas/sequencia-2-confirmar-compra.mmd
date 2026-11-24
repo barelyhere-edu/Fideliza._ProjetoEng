@@ -1,0 +1,30 @@
+sequenceDiagram
+  autonumber
+  actor V as Vendedor
+  participant TL as Tela da loja<br/>(telas-loja.js)
+  participant S as Servidor<br/>(server.js)
+  participant B as Banco de dados<br/>(vendas.txt)
+
+  V->>TL: Informa o valor (opcional) e<br/>toca em "Gerar QR Code"
+  TL->>S: POST /api/compras { valor }
+  S->>S: Confere a sessão e o perfil<br/>(vendedor ou administrador)
+  alt sem login ou perfil sem permissão
+    S-->>TL: 401 NAO_AUTENTICADO<br/>ou 403 ACESSO_NEGADO
+    TL-->>V: Mostra o erro ou volta<br/>para a tela de login
+  else acesso permitido
+    S->>B: Grava a venda: status "pendente",<br/>código de 6 caracteres, validade de 5 min
+    S-->>TL: 201 { id, codigo, expiraEm }
+    TL-->>V: Mostra o QR Code, o código<br/>e o tempo restante
+  end
+
+  loop a cada 1,5 s, enquanto a compra estiver pendente
+    TL->>S: GET /api/compras/{id}
+    S->>B: Lê a venda (e marca como<br/>"expirada" se passou de 5 min)
+    S-->>TL: status: pendente, marcada ou expirada
+  end
+
+  alt o cliente leu o QR Code a tempo
+    TL-->>V: "Compra marcada", nome do cliente<br/>e progresso do cartão
+  else passaram 5 minutos sem leitura
+    TL-->>V: "Código expirado" e opção<br/>de gerar um novo
+  end
